@@ -1,3 +1,5 @@
+var eddystoneBeacon = require('eddystone-beacon');
+
 var url = 'http://google.com';
 var options = {
     name: 'BeaconTest',    // set device name when advertising (Linux only)
