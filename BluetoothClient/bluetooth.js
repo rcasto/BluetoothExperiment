@@ -1,3 +1,11 @@
+/*
+    options is an object of the following form:
+    {
+        filters: Array<BluetoothScanFilters>,
+        optionalServices: Array<BluetoothServiceUUIDs>,
+        acceptAllDevices: <boolean> - Default = false
+    }
+*/
 function scanBluetooth(options) {
     options = options || {
         acceptAllDevices: true
