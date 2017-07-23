@@ -1,6 +1,6 @@
 var eddystoneBeacon = require('eddystone-beacon');
 
-var url = 'http://google.com';
+var url = 'https://google.com';
 var options = {
     name: 'BeaconTest',    // set device name when advertising (Linux only)
     // txPowerLevel: -21, // override TX Power Level, default value is -21,
