@@ -1,11 +1,37 @@
 var express = require('express');
 var path = require('path');
+var websocket = require('ws');
+var http = require('http');
 
 var port = process.env.PORT || 3000;
 var app = express();
 
+var server = http.createServer(app);
+var websocketServer = new websocket.Server({
+    server
+});
+
+// Setup static routing
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.sendFile('index.html'));
+app.get('/api/connect', (req, res) => {
+    var config = {};
+    if (process.env.PORT) {
+        config.port = process.env.PORT;
+    } else {
+        config.port = req.secure ? 443 : 80;
+    }
+    config.domain = req.hostname;
+    config.isSecure = req.secure;
+    res.json(config);
+});
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+websocketServer.on('connection', (ws, req) => {
+    console.log(`New client connected`);
+    ws.on('message', function incoming(message) {
+        console.log('received: %s', message);
+    });
+});
+
+server.listen(port, () => console.log(`Server started on port ${port}`));
