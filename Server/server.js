@@ -3,7 +3,7 @@ var path = require('path');
 var websocket = require('ws');
 var http = require('http');
 
-var port = process.env.PORT || 3000;
+var port = process.env.port || 3000;
 var app = express();
 
 var server = http.createServer(app);
@@ -17,8 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.sendFile('index.html'));
 app.get('/api/connect', (req, res) => {
     var config = {};
-    if (process.env.PORT) {
-        config.port = process.env.PORT;
+    if (process.env.port) {
+        config.port = process.env.port;
     } else {
         config.port = req.secure ? 443 : 80;
     }
