@@ -16,5 +16,7 @@
   "bugs": {
     "url": "https://github.com/rcasto/BluetoothExperiment/issues"
   },
-  "homepage": "https://github.com/rcasto/BluetoothExperiment#readme"
+  "homepage": "https://github.com/rcasto/BluetoothExperiment#readme",
+  "dependencies": {
+  }
 }
