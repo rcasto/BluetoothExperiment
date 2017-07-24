@@ -1,0 +1,19 @@
+{
+  "name": "webbluetooth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./Server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcasto/BluetoothExperiment.git"
+  },
+  "author": "Richie Casto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcasto/BluetoothExperiment/issues"
+  },
+  "homepage": "https://github.com/rcasto/BluetoothExperiment#readme"
+}
