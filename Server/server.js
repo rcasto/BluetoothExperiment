@@ -26,7 +26,11 @@ app.get('/api/connect', (req, res) => {
 websocketServer.on('connection', (ws, req) => {
     console.log(`New client connected`);
     ws.on('message', (message) => {
-        console.log('received: %s', message);
+        console.log(`received: ${JSON.stringify(message)}`);
+        ws.send({
+            type: 'server-message',
+            data: 'hello there!'
+        });
     });
 });
 
