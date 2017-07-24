@@ -1,9 +1,5 @@
 const WebSocket = require('ws');
-const request = require('request');
-
-var protocol = 'http';
-var domain = 'retailexperiments.azurewebsites.net';
-var path = 'api/connect';
+const config = require('./config.json');
 
 function tryParseJSON(str) {
     try {
@@ -13,21 +9,14 @@ function tryParseJSON(str) {
     }
 }
 
-request.get(`${protocol}://${domain}/${path}`, (error, response, body) => {
-    if (error) {
-        console.error(error);
-        return;
-    }
+var protocol = config.protocol === 'https' ? 'wss' : 'ws';
+var port = config.protocol === 'https' ? 443 : 80;
+var ws = new WebSocket(`${protocol}://${config.domain}:${port}`);
 
-    body = tryParseJSON(body);
-
-    if (body) {
-        const ws = new WebSocket(`wss://${body.domain}:${body.port}`);
-        ws.on('open', function open() {
-            console.log('Client connected to server');
-        });
-        ws.on('message', function incoming(data) {
-            console.log(data);
-        });
-    }
+ws.on('open', () => {
+    console.log('Client connected to server');
 });
+ws.on('message', (data) => {
+    console.log(data);
+});
+ws.on('error', (error) => console.error(error));

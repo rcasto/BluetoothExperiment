@@ -4,7 +4,6 @@
   "description": "",
   "main": "client.js",
   "dependencies": {
-    "request": "^2.81.0",
     "ws": "^3.0.0"
   },
   "devDependencies": {},

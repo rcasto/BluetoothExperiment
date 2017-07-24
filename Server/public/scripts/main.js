@@ -1,4 +1,5 @@
 (function () {
+    var messageContainer = document.getElementById('message-container');
 
     function tryParseJSON(str) {
         try {
@@ -6,6 +7,18 @@
         } catch (error) {
             return null;
         }
+    }
+
+    function displayMessage(message, isError) {
+        var msg = createMessage(message, isError);
+        messageContainer.appendChild(msg);
+    }
+
+    function createMessage(message, isError) {
+        var messageContainer = document.createElement('div');
+        messageContainer.className = isError ? 'message error' : 'message';
+        messageContainer.innerHTML = JSON.stringify(message);
+        return messageContainer;
     }
 
     Request.get('api/connect')
@@ -17,20 +30,23 @@
                 return;
             }
 
-            var ws = new WebSocket('wss://' + config.domain + ':' + config.port);
+            var wsProtocol = config.isSecure ? 'wss' : 'ws';
+            var ws = new WebSocket(wsProtocol + '://' + config.domain + ':' + config.port);
 
             ws.addEventListener('open', function (event) {
                 console.log('Socket connection opened with server');
             });
             ws.addEventListener('message', function (event) {
                 console.log('Message from server', event.data);
+                displayMessage(event.data, false);
             });
             ws.addEventListener('error', function (event) {
                 console.error('Error occurred:', event.data);
-            });  
+                displayMessage('An error occurred', true);
+            });
         })
         .catch(function (error) {
-            console.error(error);
+            displayMessage(error, true);
         });
 
 }());
