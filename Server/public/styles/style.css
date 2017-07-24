@@ -1,0 +1,14 @@
+.message-container {
+    padding: 6px;
+    border: 1px solid black;
+}
+.message {
+    margin-top: 6px;
+    background-color: #4BB543;
+}
+.message:first-child {
+    margin-top: 0;
+}
+.message.error {
+    background-color: #FF9494;
+}

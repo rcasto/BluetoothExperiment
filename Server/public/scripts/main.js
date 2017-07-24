@@ -34,7 +34,9 @@
             var ws = new WebSocket(wsProtocol + '://' + config.domain + ':' + config.port);
 
             ws.addEventListener('open', function (event) {
-                console.log('Socket connection opened with server');
+                var msg = 'Socket connection opened with server';
+                console.log(msg);
+                displayMessage(msg, false);
             });
             ws.addEventListener('message', function (event) {
                 console.log('Message from server', event.data);
