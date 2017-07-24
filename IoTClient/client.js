@@ -5,20 +5,29 @@ var protocol = 'http';
 var domain = 'retailexperiments.azurewebsites.net';
 var path = 'api/connect';
 
+function tryParseJSON(str) {
+    try {
+        return JSON.parse(str);
+    } catch (error) {
+        return null;
+    }
+}
+
 request.get(`${protocol}://${domain}/${path}`, (error, response, body) => {
     if (error) {
         console.error(error);
         return;
     }
-    console.log(body);
+
+    body = tryParseJSON(body);
+
+    if (body) {
+        const ws = new WebSocket(`ws://${body.domain}:${body.port}`);
+        ws.on('open', function open() {
+            console.log('Client connected to server');
+        });
+        ws.on('message', function incoming(data) {
+            console.log(data);
+        });
+    }
 });
-
-// const ws = new WebSocket('ws://www.host.com/path');
-
-// ws.on('open', function open() {
-//     ws.send('something');
-// });
-
-// ws.on('message', function incoming(data) {
-//     console.log(data);
-// });
