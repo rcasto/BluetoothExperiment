@@ -4,6 +4,7 @@
 }
 .message {
     margin-top: 6px;
+    padding: 4px;
     background-color: #4BB543;
 }
 .message:first-child {
