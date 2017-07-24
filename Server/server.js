@@ -17,11 +17,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.sendFile('index.html'));
 app.get('/api/connect', (req, res) => {
     var config = {};
-    if (port) {
-        config.port = port;
-    } else {
+    // if (port) {
+    //     config.port = port;
+    // } else {
         config.port = req.secure ? 443 : 80;
-    }
+    // }
     config.domain = req.hostname;
     config.isSecure = req.secure;
     res.json(config);
