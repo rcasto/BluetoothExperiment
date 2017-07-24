@@ -17,7 +17,7 @@
                 return;
             }
 
-            var ws = new WebSocket('ws://' + config.domain + ':' + config.port);
+            var ws = new WebSocket('wss://' + config.domain + ':' + config.port);
 
             ws.addEventListener('open', function (event) {
                 console.log('Socket connection opened with server');

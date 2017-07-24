@@ -22,7 +22,7 @@ request.get(`${protocol}://${domain}/${path}`, (error, response, body) => {
     body = tryParseJSON(body);
 
     if (body) {
-        const ws = new WebSocket(`ws://${body.domain}:${body.port}`);
+        const ws = new WebSocket(`wss://${body.domain}:${body.port}`);
         ws.on('open', function open() {
             console.log('Client connected to server');
         });
