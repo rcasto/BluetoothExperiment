@@ -6,6 +6,7 @@ var wsProtocol = config.protocol === 'https' ? 'wss' : 'ws';
 var wsPort = config.protocol === 'https' ? 443 : 80;
 
 function ClientEmitter(info) {
+    EventEmitter.call(this);
     this.info = info;
     this.wsBuffer = [];
     this.ws = null;
