@@ -25,13 +25,14 @@ function ClientEmitter(info) {
 ClientEmitter.prototype = Object.create(events.EventEmitter.prototype);
 
 ClientEmitter.prototype.connect = function () {
+    var self = this;
     this.ws = new WebSocket(wsProtocol + '://' + config.domain + ':' + wsPort);
     this.ws.on('open', function () {
         console.log('Client connected to server');
-        this.wsBuffer.forEach(function (msg) {
-            this.ws.send(JSON.stringify(msg));
+        self.wsBuffer.forEach(function (msg) {
+            self.ws.send(JSON.stringify(msg));
         });
-        this.wsBuffer = null;
+        self.wsBuffer = null;
     });
     this.ws.on('message', function (data) {
         console.log(data);
