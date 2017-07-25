@@ -2,8 +2,8 @@ var client = require('./client');
 
 class Test extends client {
     constructor(info) {
-        super();
-        this.connect(info);
+        super(info);
+        this.connect();
     }
     emitTest() {
         console.log('Test emit');
