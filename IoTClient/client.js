@@ -1,5 +1,6 @@
 var WebSocket = require('ws');
 var events = require('events');
+var util = require('util');
 var config = require('./config.json');
 
 var wsProtocol = config.protocol === 'https' ? 'wss' : 'ws';
@@ -22,7 +23,8 @@ function ClientEmitter(info) {
         }
     });
 }
-ClientEmitter.prototype = Object.create(events.EventEmitter.prototype);
+util.inherits(ClientEmitter, events.EventEmitter);
+// ClientEmitter.prototype = Object.create(events.EventEmitter.prototype);
 
 ClientEmitter.prototype.connect = function () {
     var self = this;
