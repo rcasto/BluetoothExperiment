@@ -21,8 +21,10 @@ app.get('/', (req, res) => res.sendFile('index.html'));
 app.get('/api/connect', (req, res) => {
     res.json({
         domain: req.hostname,
-        port: req.secure ? 443 : 80,
-        isSecure: req.secure
+        // port: req.secure ? 443 : 80,
+        port: 443,
+        // isSecure: req.secure
+        isSecure: true
     });
 });
 
