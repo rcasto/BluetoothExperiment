@@ -37,16 +37,19 @@ websocketServer.on('connection', (ws, req) => {
     ws.on('message', (message) => {
         console.log(`received: ${message}`);
         message = helpers.tryParseJSON(message);
-        if (message && message.type === 'web-client') {
-            webClientSet.add(ws);
-        } else {
-            webClientSet.forEach((webClient) => {
-                if (websocketServer.clients.has(webClient)) {
-                    webClient.send(JSON.stringify(message));
-                } else {
-                    webClientSet.remove(webClient);
-                }
-            });
+        if (message) {
+            if (message.type === 'web-client') {
+                webClientSet.add(ws);
+            } else { 
+                // echo/send message to all web clients that are connected
+                webClientSet.forEach((webClient) => {
+                    if (websocketServer.clients.has(webClient)) {
+                        webClient.send(JSON.stringify(message));
+                    } else {
+                        webClientSet.delete(webClient);
+                    }
+                });
+            }
         }
     });
 });
