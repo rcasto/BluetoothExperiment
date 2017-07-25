@@ -37,6 +37,9 @@
                 var msg = 'Socket connection opened with server';
                 console.log(msg);
                 displayMessage(msg, false);
+                ws.send(JSON.stringify({
+                    type: 'web-client'
+                }));
             });
             ws.addEventListener('message', function (event) {
                 console.log('Message from server', event.data);
@@ -50,5 +53,4 @@
         .catch(function (error) {
             displayMessage(error, true);
         });
-
 }());
