@@ -13,7 +13,9 @@ class ClientEmitter extends events.EventEmitter {
         this.ws = null;
         this.on('sensorData', (data) => {
             console.log(`Sensor data was called with: ${JSON.stringify(data)}`);
-            data = Object.assign(data, this.info);
+            data = Object.assign(data, this.info, {
+                timestamp: Date.now()
+            });
             if (this.wsBuffer) {
                 this.wsBuffer.push(data);
             } else {
