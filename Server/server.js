@@ -4,7 +4,9 @@ const path = require('path');
 const websocket = require('ws');
 const http = require('http');
 const GoogleAuth = require('google-auth-library');
+const uuidv4 = require('uuid/v4');
 const helpers = require('../util/helpers');
+const dbClient = require('./db');
 const config = require('./config.json');
 
 var auth = new GoogleAuth;
@@ -45,7 +47,13 @@ app.post('/tokensignin', (req, res) => {
             }
             var payload = login.getPayload();
             var userid = payload['sub'];
-            res.send(userid);
+            var apiKey = dbClient.getUser(userid).apiKey;
+            if (!apiKey) {
+                dbClient.addUser(userid, {
+                    apiKey: uuidv4()
+                });
+            }
+            res.send(apiKey);
         });
 });
 
