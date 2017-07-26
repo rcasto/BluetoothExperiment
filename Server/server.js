@@ -33,7 +33,7 @@ app.get('/api/connect', (req, res) => {
     });
 });
 app.post('/tokensignin', (req, res) => {
-    var token = req.body;
+    var token = req.body && req.body.idToken;
     res.send(token);
     client.verifyIdToken(
         token,

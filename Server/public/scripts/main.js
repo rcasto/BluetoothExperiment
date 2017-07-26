@@ -58,13 +58,15 @@
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
-    Request.post('tokensignin', id_token)
-        .then(function (data) {
-            console.log('Token sign in result:', data);
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+    Request.post('tokensignin', {
+        idToken: id_token
+    })
+    .then(function (data) {
+        console.log('Token sign in result:', data);
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
