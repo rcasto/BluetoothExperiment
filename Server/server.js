@@ -51,12 +51,6 @@ app.post('/tokensignin', (req, res) => {
 
 websocketServer.on('connection', (ws, req) => {
     console.log(`New client connected`);
-
-    ws.send(JSON.stringify({
-        type: 'server-message',
-        data: 'hello there!'
-    }));
-
     ws.on('message', (message) => {
         console.log(`received: ${message}`);
         message = helpers.tryParseJSON(message);
