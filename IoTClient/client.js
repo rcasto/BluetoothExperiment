@@ -11,7 +11,7 @@ function ClientEmitter(info) {
     this.info = info;
     this.wsBuffer = [];
     this.ws = null;
-    console.log(this instanceof events.EventEmitter);
+    console.log(this instanceof events.EventEmitter, JSON.stringify(this));
     this.on('sensorData', function (data) {
         console.log(`Sensor data was called with: ${JSON.stringify(data)}`);
         data = Object.assign(data, this.info, {
