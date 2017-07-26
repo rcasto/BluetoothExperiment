@@ -32,7 +32,7 @@ app.get('/api/connect', (req, res) => {
         isSecure: true
     });
 });
-app.post('tokensignin', (req, res) => {
+app.post('/tokensignin', (req, res) => {
     var token = req.body;
     res.send(token);
     client.verifyIdToken(
@@ -40,12 +40,12 @@ app.post('tokensignin', (req, res) => {
         config.clientId,
         (error, login) => {
             if (error) {
-                res.end(error);
+                res.json(error);
                 return;
             }
             var payload = login.getPayload();
             var userid = payload['sub'];
-            res.end(userid);
+            res.send(userid);
         });
 });
 

@@ -24,7 +24,7 @@ var Request = (function () {
             var xhr = window.XMLHttpRequest ? 
                 new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
             
-            xhr.open('GET', url);
+            xhr.open('POST', url);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState > 3 && xhr.status === 200) { 
                     resolve(xhr.responseText); 
