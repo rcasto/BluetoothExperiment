@@ -1,8 +1,14 @@
-var express = require('express');
-var path = require('path');
-var websocket = require('ws');
-var http = require('http');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const websocket = require('ws');
+const http = require('http');
+const GoogleAuth = require('google-auth-library');
 const helpers = require('../util/helpers');
+const config = require('./config.json');
+
+var auth = new GoogleAuth;
+var client = new auth.OAuth2(config.clientId, '', '');
 
 var port = process.env.port || 3000;
 var app = express();
@@ -16,16 +22,31 @@ var webClientSet = new Set();
 
 // Setup static routing
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get('/', (req, res) => res.sendFile('index.html'));
 app.get('/api/connect', (req, res) => {
     res.json({
         domain: req.hostname,
-        // port: req.secure ? 443 : 80,
         port: 443,
-        // isSecure: req.secure
         isSecure: true
     });
+});
+app.post('tokensignin', (req, res) => {
+    var token = req.body;
+    res.send(token);
+    client.verifyIdToken(
+        token,
+        config.clientId,
+        (error, login) => {
+            if (error) {
+                res.end(error);
+                return;
+            }
+            var payload = login.getPayload();
+            var userid = payload['sub'];
+            res.end(userid);
+        });
 });
 
 websocketServer.on('connection', (ws, req) => {
