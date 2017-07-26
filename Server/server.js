@@ -49,8 +49,9 @@ app.post('/tokensignin', (req, res) => {
             var userid = payload['sub'];
             var apiKey = dbClient.getUser(userid).apiKey;
             if (!apiKey) {
+                apiKey = uuidv4();
                 dbClient.addUser(userid, {
-                    apiKey: uuidv4()
+                    apiKey: apiKey
                 });
             }
             res.send(apiKey);

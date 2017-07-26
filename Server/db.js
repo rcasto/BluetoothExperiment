@@ -8,9 +8,9 @@ var users = db.addCollection('users');
 var devices = db.addCollection('devices');
 
 function getUser(userId) {
-    return users.find({
+    return users.findOne({
         userId: userId
-    })[0] || {};
+    }) || {};
 }
 
 function addUser(userId, userInfo) {
