@@ -81,7 +81,8 @@
         });
 }());
 
-function onSignIn(googleUser) {
+// Google Sign In Functions
+function onSuccess(googleUser) {
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
     Request.post('tokensignin', {
@@ -97,4 +98,17 @@ function onSignIn(googleUser) {
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+function onFailure(error) {
+    console.error(error);
+}
+function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': '100%',
+        'height': '100%',
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
 }
