@@ -1,5 +1,4 @@
 (function () {
-    var messageContainer = document.getElementById('message-container');
 
     function tryParseJSON(str) {
         try {
@@ -7,6 +6,26 @@
         } catch (error) {
             return null;
         }
+    }
+
+    function isDebugMode() {
+        return queryStringMap()['debug'] === 'true';
+    }
+
+    function queryStringMap() {
+        var queryMap = {};
+        window.location.search
+            .slice(1)
+            .split('&')
+            .forEach((queryChunk) => {
+                var qc = queryChunk.split('=');
+                if (qc.length === 1) {
+                    queryMap[qc[0]] = 'true';
+                } else {
+                    queryMap[qc[0]] = qc[1];
+                }
+            });
+            return queryMap;
     }
 
     function displayMessage(message, isError) {
@@ -19,6 +38,12 @@
         messageContainer.className = isError ? 'message error' : 'message';
         messageContainer.innerHTML = JSON.stringify(message);
         return messageContainer;
+    }
+
+    // activate debug mode
+    if (isDebugMode()) {
+        var messageContainer = document.createElement('div');
+        messageContainer.id = 'message-container';
     }
 
     Request.get('api/connect')
