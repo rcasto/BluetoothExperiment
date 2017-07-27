@@ -1,26 +1,32 @@
 var ultrasonic = require("jsupm_ultrasonic");
-var sensor = new ultrasonic.UltraSonic(2);
+var config = require('./config.json');
 var emitSensorData = require("../IoTClient/client");
+var email 	= require("emailjs/email");
+
 var deviceType = "Edison2";
 var deviceDesc = "Floor 3. Electronics ";
 var sensorType = "Ultrasonic";
 var sensorDesc = "Foot traffic measurement";
+var threshold = 0;
+var ctr = 0;
+
 var clientEmitter = new emitSensorData({deviceType:deviceType, deviceDesc:deviceDesc});
 clientEmitter.connect();
+
+var sensor = new ultrasonic.UltraSonic(2);
 var state_change = "false";
-var email 	= require("emailjs/email");
-var server 	= email.server.connect({
-	   user:    "retailtracking@gmail.com", 
-	   password:"********", 
-	   host:    "smtp.gmail.com", 
+var server = email.server.connect({
+	   user:    config.fromEmailUser, 
+	   password:config.fromEmailPwd, 
+	   host: config.host, 
 	   ssl:     true
 });
 
 function sendEmail(msg){
  server.send({
 	   text:    deviceDesc + ".." + sensorDesc + ".." + msg, 
-	   from:    "retailtracking@gmail.com", 
-	   to:      "neer.ganesan@gmail.com, rcasto92@gmail.com",
+	   from:    config.fromEmailUser, 
+	   to:      config.toEmail1 + "," + config.toEmail2,
 	   subject: msg
  }, function(err, message) { console.log(err || message); });
 }
@@ -28,9 +34,6 @@ function sendEmail(msg){
 function EmitData(msg){
 	clientEmitter.emit("sensorData",{sensorType: sensorType, sensorDesc: sensorDesc, type:"state", value: msg});
 }
-
-var threshold = 0;
-var ctr = 0;
 
 var bootstrap = setInterval(function(){
 	var travelTime = sensor.getDistance();
@@ -67,10 +70,7 @@ var myInterval = setInterval(function()
 	 }
 }, 1000);
 
-// When exiting: clear interval and print message
-process.on('SIGINT', function()
-{
-	 //clearInterval(myInterval);
+process.on('SIGINT', function(){
  	 console.log("Exiting...");
   	 process.exit(0);
 });
