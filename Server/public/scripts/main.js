@@ -62,22 +62,23 @@
             ws.addEventListener('open', function (event) {
                 var msg = 'Socket connection opened with server';
                 console.log(msg);
-                displayMessage(msg, false);
+                isDebugMode() && displayMessage(msg, false);
                 ws.send(JSON.stringify({
                     type: 'web-client'
                 }));
             });
             ws.addEventListener('message', function (event) {
                 console.log('Message from server', event.data);
-                displayMessage(event.data, false);
+                isDebugMode() && displayMessage(event.data, false);
             });
             ws.addEventListener('error', function (event) {
                 console.error('Error occurred:', event.data);
-                displayMessage('An error occurred', true);
+                isDebugMode() && displayMessage('An error occurred', true);
             });
         })
         .catch(function (error) {
-            displayMessage(error, true);
+            console.error(error);
+            isDebugMode() && displayMessage(error, true);
         });
 }());
 
@@ -101,14 +102,4 @@ function onSuccess(googleUser) {
 }
 function onFailure(error) {
     console.error(error);
-}
-function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': '100%',
-        'height': '100%',
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
 }
