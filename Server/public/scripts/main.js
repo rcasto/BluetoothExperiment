@@ -44,6 +44,7 @@
     if (isDebugMode()) {
         var messageContainer = document.createElement('div');
         messageContainer.id = 'message-container';
+        document.body.appendChild(messageContainer);
     }
 
     Request.get('api/connect')
