@@ -37,7 +37,7 @@ board.on("ready", function(){
 	touch1.on("press", function(){
 			server.send({
 				text: deviceDesc + ".." + sensorDesc1 + "..Stocked up",
-				from: "neer.ganesan@gmail.com",
+				from: "retailtracking@gmail.com",
 				to:"neer.ganesan@gmail.com, rcasto92@gmail.com",
 				subject:"Stocked up"
 			}, function(err, message){console.log(err||message); });
