@@ -15,8 +15,8 @@ var board = new five.Board({
 	io:new Edison()
 });
 var server = email.server.connect({
-	user: "neer.ganesan@gmail.com",
-	password: "Inn0cencE",
+	user: "retailtracking@gmail.com",
+	password: "**********",
 	host: "smtp.gmail.com",
 	ssl: true
 });
