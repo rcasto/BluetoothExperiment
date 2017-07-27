@@ -4,10 +4,27 @@ var db = new loki('db.json', {
     autosave: true,
     autoload: true
 });
-var storeCollection = db.addCollection('stores');
+var users = db.addCollection('users');
+var devices = db.addCollection('devices');
 
-storeCollection.insert({
-    store: 'Nordstrom',
-    username: 'nordstrom@gmail.com',
-    password: 'password'
-});
+function getUser(userId) {
+    return users.findOne({
+        userId: userId
+    }) || {};
+}
+
+function addUser(userId, userInfo) {
+    users.insert(Object.assign(userInfo, {
+        userId: userId
+    }));
+}
+
+function addDevice(apiKey, deviceInfo) {
+
+}
+
+module.exports = {
+    getUser,
+    addUser,
+    addDevice
+};

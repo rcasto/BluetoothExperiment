@@ -13,3 +13,7 @@
 .message.error {
     background-color: #FF9494;
 }
+
+g-signin2 > div {
+    margin: 0 auto;
+}

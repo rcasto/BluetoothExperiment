@@ -1,5 +1,4 @@
 (function () {
-    var messageContainer = document.getElementById('message-container');
 
     function tryParseJSON(str) {
         try {
@@ -7,6 +6,26 @@
         } catch (error) {
             return null;
         }
+    }
+
+    function isDebugMode() {
+        return queryStringMap()['debug'] === 'true';
+    }
+
+    function queryStringMap() {
+        var queryMap = {};
+        window.location.search
+            .slice(1)
+            .split('&')
+            .forEach((queryChunk) => {
+                var qc = queryChunk.split('=');
+                if (qc.length === 1) {
+                    queryMap[qc[0]] = 'true';
+                } else {
+                    queryMap[qc[0]] = qc[1];
+                }
+            });
+            return queryMap;
     }
 
     function displayMessage(message, isError) {
@@ -19,6 +38,13 @@
         messageContainer.className = isError ? 'message error' : 'message';
         messageContainer.innerHTML = JSON.stringify(message);
         return messageContainer;
+    }
+
+    // activate debug mode
+    if (isDebugMode()) {
+        var messageContainer = document.createElement('div');
+        messageContainer.id = 'message-container';
+        document.body.appendChild(messageContainer);
     }
 
     Request.get('api/connect')
@@ -36,37 +62,44 @@
             ws.addEventListener('open', function (event) {
                 var msg = 'Socket connection opened with server';
                 console.log(msg);
-                displayMessage(msg, false);
+                isDebugMode() && displayMessage(msg, false);
                 ws.send(JSON.stringify({
                     type: 'web-client'
                 }));
             });
             ws.addEventListener('message', function (event) {
                 console.log('Message from server', event.data);
-                displayMessage(event.data, false);
+                isDebugMode() && displayMessage(event.data, false);
             });
             ws.addEventListener('error', function (event) {
                 console.error('Error occurred:', event.data);
-                displayMessage('An error occurred', true);
+                isDebugMode() && displayMessage('An error occurred', true);
             });
         })
         .catch(function (error) {
-            displayMessage(error, true);
+            console.error(error);
+            isDebugMode() && displayMessage(error, true);
         });
 }());
 
-function onSignIn(googleUser) {
+// Google Sign In Functions
+function onSuccess(googleUser) {
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
-    Request.post('tokensignin', id_token)
-        .then(function (data) {
-            console.log('Token sign in result:', data);
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+    Request.post('tokensignin', {
+        idToken: id_token
+    })
+    .then(function (data) {
+        console.log('Token sign in result:', data);
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+function onFailure(error) {
+    console.error(error);
 }

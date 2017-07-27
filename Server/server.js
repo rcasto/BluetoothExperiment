@@ -4,7 +4,9 @@ const path = require('path');
 const websocket = require('ws');
 const http = require('http');
 const GoogleAuth = require('google-auth-library');
+const uuidv4 = require('uuid/v4');
 const helpers = require('../util/helpers');
+const dbClient = require('./db');
 const config = require('./config.json');
 
 var auth = new GoogleAuth;
@@ -33,7 +35,7 @@ app.get('/api/connect', (req, res) => {
     });
 });
 app.post('/tokensignin', (req, res) => {
-    var token = req.body;
+    var token = req.body && req.body.idToken;
     res.send(token);
     client.verifyIdToken(
         token,
@@ -45,18 +47,19 @@ app.post('/tokensignin', (req, res) => {
             }
             var payload = login.getPayload();
             var userid = payload['sub'];
-            res.send(userid);
+            var apiKey = dbClient.getUser(userid).apiKey;
+            if (!apiKey) {
+                apiKey = uuidv4();
+                dbClient.addUser(userid, {
+                    apiKey: apiKey
+                });
+            }
+            res.send(apiKey);
         });
 });
 
 websocketServer.on('connection', (ws, req) => {
     console.log(`New client connected`);
-
-    ws.send(JSON.stringify({
-        type: 'server-message',
-        data: 'hello there!'
-    }));
-
     ws.on('message', (message) => {
         console.log(`received: ${message}`);
         message = helpers.tryParseJSON(message);

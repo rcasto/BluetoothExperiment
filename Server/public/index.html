@@ -2,13 +2,13 @@
 <html>
     <head>
         <title>Retail Service Experiments</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="google-signin-client_id" content="200001802695-1i29dfpdrhu8u0uh93jb7f5f8neuc9u2.apps.googleusercontent.com">
         <link rel="stylesheet" href="styles/style.css" />
     </head>
     <body>
-        <p>Experimenting with retail service technologies and strategies</p>
-        <div id="message-container"></div>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <h1>Experimenting with retail service technologies and strategies</h1>
+        <div class="g-signin2" data-onsuccess="onSuccess" data-onfailure="onFailure"></div>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="scripts/request.js"></script>
         <script src="scripts/main.js"></script>
