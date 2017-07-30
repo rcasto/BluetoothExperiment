@@ -15,4 +15,7 @@ function scanBluetooth(options) {
 	    .catch((error) => console.error(error));
 }
 
-scanBluetooth();
+var scanBluetoothButton = document.getElementById('scan-bluetooth');
+scanBluetoothButton.onclick = function (event) {
+    scanBluetooth();
+};
